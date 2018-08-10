@@ -1,14 +1,15 @@
 
 import bottle
-import pymongo
+from pymongo import MongoClient as mc
 
 # this is the handler for the default path of the web server
 
+
 @bottle.route('/')
 def index():
-    
+
     # connect to mongoDB
-    connection = pymongo.MongoClient('localhost', 27017)
+    connection = mc('localhost', 27017)
 
     # attach to test database
     db = connection.test
