@@ -30,16 +30,20 @@ def delete_lowest_hw_grade():
 
 # 2. Loop through the variable and delete the first grade for each student in the document
 
-    list = []
+    all_list = []
+    low_list = []
     count = 0
     for item in cursor:
-        list.append(item)
-    for i in list:
-        if count % 3 == 0:
-            print list[count]
+        all_list.append(item)
+    for i in all_list:
+        if count % 2 != 0:
+            low_list.append(all_list[count])
+            #print all_list[count]
         count += 1
 
+
+    print all_list[0:11]
     print " "
-    print list[390:401]
+    print low_list[:]
 
 delete_lowest_hw_grade()
