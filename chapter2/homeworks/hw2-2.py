@@ -18,7 +18,7 @@ def delete_lowest_hw_grade():
 
 # 1. Select all homework grades, stort students then homework stores from lowest to highest, and store in a variable
     query = {'type': 'homework'}
-    projection = {'_id': 0, 'student_id': 1, 'score': 1}
+    projection = {'_id': 1, 'student_id': 1, 'score': 1}
     try:
         cursor = grades.find(query, projection)
         #cursor.limit(10)
@@ -37,13 +37,12 @@ def delete_lowest_hw_grade():
         all_list.append(item)
     for i in all_list:
         if count % 2 != 0:
-            low_list.append(all_list[count])
-            #print all_list[count]
+            low_list.append(all_list[count]['_id'])
         count += 1
 
+    for i in low_list:
+        db.grades.delete_one({'_id': i})
 
-    print all_list[0:11]
-    print " "
-    print low_list[:]
+    #print(low_list[:])
 
 delete_lowest_hw_grade()
