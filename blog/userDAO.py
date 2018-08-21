@@ -53,7 +53,7 @@ class UserDAO:
 
         user = None
         try:
-            # TODO XXX cursor = scores.findOne({'username'})
+            user = self.users.find_one( { '_id': username})
             print "This space intentionally left blank."
         except:
             print "Unable to query database for user"

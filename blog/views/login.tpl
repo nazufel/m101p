@@ -34,7 +34,7 @@
           </td>
           <td class="error">
 	    {{login_error}}
-            
+
           </td>
         </tr>
 
