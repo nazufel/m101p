@@ -53,6 +53,12 @@ class UserDAO:
 
         user = None
         try:
+            # XXX HW 2.3 Students Work Here
+            # you will need to retrieve right document from the users collection.
+
+            # Answer #
+
+            #Using find_one and searching for the _id. Password validation is done below.
             user = self.users.find_one( { '_id': username})
             print "This space intentionally left blank."
         except:
@@ -81,6 +87,13 @@ class UserDAO:
             user['email'] = email
 
         try:
+            # XXX HW 2.3 Students work here
+            # You need to insert the user into the users collection.
+            # Don't over think this one, it's a straight forward insert.
+
+            # Answer #
+
+            #Using insert_one with the filled out user document passed in by the front end.
             self.users.insert_one(user)
 
             print "This space intentionally left blank."
