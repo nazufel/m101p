@@ -1,6 +1,6 @@
-# Task: Write a program in the language of your choice that will remove the grade of type "homework"
-# with the lowest score for each student from the dataset in the handout. Since each document is one grade,
-# it should remove one document per student.
+# Task: Write a program in the language of your choice that will remove the lowest
+#+ homework score for each student. Since there is a single document for each student
+#+ containing an array of scores, you will need to update the scores array and remove the homework.
 
 import pymongo
 
@@ -9,11 +9,11 @@ def delete_lowest_hw_grade():
     # set up connection to mongo running on localhost
     connection = pymongo.MongoClient("mongodb://localhost")
 
-    # using the students database
-    db = connection.students
+    # using the school database
+    db = connection.school
 
-    # using the grades collection
-    grades = db.grades
+    # using the students collection
+    grades = db.students
 
 ### Steps to complete homework task ###
 
