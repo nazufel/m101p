@@ -11,6 +11,10 @@ db.products.aggregate([
 ])
 ```
 
+```
+db.posts.aggregate([{$unwind:"$comments"},{$group: {_id:"$comment.author", comments:{$sum:1} } },{$sort: {comments: -1} },{$limit: 1}])
+```
+
 ## Quiz Questions and Notes by Section
 
 ### Sample Aggregation Example
@@ -580,3 +584,87 @@ db.zips.aggregate([
 ```
 db.zips.aggregate([{$group:{_id:"$state", population:{$sum:"$pop"}}}],{allowDiskUse:true})
 ```
+### Python and Aggregation Results
+
+#### Notes:
+* Pymongo can return an array of documents with aggregation or can return a cursor
+    - Array
+    ```python
+    import pymongo
+
+    connection = pymongo.MongoClient()
+    db = connection.aggregate
+
+    result = db.zips.aggregate([{"$group":{"_id:$state", "population": {"$sum":"$pop"}}}])
+
+    print results
+    ```
+    - Cursor
+    ```python
+    import pymongo
+
+    connection = pymongo.MongoClient()
+    db = connection.aggregate
+
+    result = db.zips.aggregate([{"$group":{"_id:$state", "population": {"$sum":"$pop"}}}], cursor={})
+
+    print results
+    ```
+    -  allowDiskUse
+    ```python
+    import pymongo
+
+    connection = pymongo.MongoClient()
+    db = connection.aggregate
+
+    result = db.zips.aggregate([{"$group":{"_id:$state", "population": {"$sum":"$pop"}}}], cursor={}, allowDiskUse=True)
+
+    print results
+    ```
+**Question** Which of the following statements about aggregation results are true?
+
+**Answer:**
+```
+In mongoDB 2.6, by default, in the shell, the aggregate method returns a cursor.
+```
+```
+In mongoDB 2.4, by default, PyMongo's aggregate method returns a single document.
+```
+```
+In mongoDB 2.6, by default, PyMongo's aggregate method returns a single document.
+```
+#### Mapping between SQL and Aggregation
+```
++------------------------------------+--------------------------------+
+| SQL Terms, Functions, and Concepts | MongoDB Aggregation Operations |
++------------------------------------+--------------------------------+
+|WHERE                               | $match                         |       
++------------------------------------+--------------------------------+
+|GROUP BY                            | $group                         |
++------------------------------------+--------------------------------+
+|HAVING                              | $match                         |  
+|------------------------------------+--------------------------------+
+|SELECT                              | $project                       |
+|------------------------------------+--------------------------------+
+|ORDER BY                            | $sort                          |  
+|------------------------------------+--------------------------------+
+|LIMIT                               | $limit                         |  
+|------------------------------------+--------------------------------+
+|SUM()                               | $sum                           |           
+|------------------------------------+--------------------------------+
+|COUNT()                             | $sum                           |
+|------------------------------------+--------------------------------+
+|join                                | No direct corresponding        |
+|                                    | operator, however, the $unwind |
+|                                    | operator allows for somewhat   |
+|                                    | similar functionality but with |
+|                                    | fields embedded within the     |
+|                                    | document.*                     |
++------------------------------------+--------------------------------+
+```
+### Limitatoins in Aggregation Framework
+* 100MB limit for pipelines
+    - Can get around this with ```allowDiskUse```
+* 16MB limit by default in Python
+    - Can get around this with using a cursor
+* Sharding - There are architectural challenges using aggregation on a sharded DB.
